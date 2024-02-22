@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import fr.ecole3il.rodez2023.perlin.math.BruitAleatoire;
 import fr.ecole3il.rodez2023.perlin.math.BruitPerlin2D;
 
 /**
@@ -110,8 +111,8 @@ public class VisualiseurBruitPerlin extends JFrame {
         }
         
         
-        ////////// CODE À MODIFIER 
-        noiseImage = new truc;
+        ////////// CODE À MODIFIER
+        noiseImage = new ImageBruit(new BruitPerlin2D(seed, resolution));
         
         ////////// FIN CODE À MODIFIER
         tickImageButton.setEnabled(true); // Désactiver le bouton initialement
