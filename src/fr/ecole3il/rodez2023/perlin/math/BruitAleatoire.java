@@ -10,13 +10,18 @@ public class BruitAleatoire extends Bruit2D {
 
     private Random random;
 
+    /**
+     * Constructeur BruitAléatoire
+     * @param graine la graine
+     * @param resolution la résolution
+     */
     public BruitAleatoire(long graine, double resolution) {
         super(graine, resolution);
-        random = new Random(graine);
+        random = new Random();
     }
 
     @Override
     public double bruit2D(double x, double y) {
-        return random.nextDouble();
+        return random.nextDouble(x,y);
     }
 }

@@ -1,6 +1,8 @@
 package fr.ecole3il.rodez2023.perlin.math;
 
 
+import fr.ecole3il.rodez2023.perlin.Utils;
+
 /**
  * @author philibert roquart, fainéant
  */
@@ -26,20 +28,20 @@ public class BruitPerlin2D extends Bruit2D {
 
 	private final int[] permutation;
 
-	public BruitPerlin2D(long graine, double resolution) {
-		super(graine, resolution);
-		this.permutation = PERMUTATION;
+	public BruitPerlin2D(long seed, double resolution) {
+		super(seed, resolution);
+		this.permutation = Utils.melanger(PERMUTATION, seed);
 	}
 
 	@Override
 	public double bruit2D(double x, double y) {
 		double tempX, tempY;
 		int x0, y0, ii, jj, gi0, gi1, gi2, gi3;
-		double unit = 1.0f / (double) Math.sqrt(2);
+		double unit = 1.0f / Math.sqrt(2);
 		double tmp, s, t, u, v, Cx, Cy, Li1, Li2;
 		// Adapter pour la résolution
-		x /= resolution;
-		y /= resolution;
+		x /= getResolution();
+		y /= getResolution();
 
 		// Obtenir les coordonnées de la grille associées à (x, y)
 		x0 = (int) (x);
@@ -50,27 +52,27 @@ public class BruitPerlin2D extends Bruit2D {
 		jj = y0 & 255;
 
 		// Récupérer les indices de gradient associés aux coins du quadrilatère
-		gi0 = permutation[ii + permutation[jj]] % 8;
-		gi1 = permutation[ii + 1 + permutation[jj]] % 8;
-		gi2 = permutation[ii + permutation[jj + 1]] % 8;
-		gi3 = permutation[ii + 1 + permutation[jj + 1]] % 8;
+		gi0 = permutation[(ii + permutation[jj]) & 255] % 8;
+		gi1 = permutation[(ii + 1 + permutation[jj]) & 255] % 8;
+		gi2 = permutation[(ii + permutation[jj + 1]) & 255] % 8;
+		gi3 = permutation[(ii + 1 + permutation[jj + 1]) & 255] % 8;
 
 		// Récupérer les vecteurs de gradient et effectuer des interpolations pondérées
 		tempX = x - x0;
 		tempY = y - y0;
-		s = GRADIENT_2D[gi0][0] * tempX + GRADIENT_2D[gi0][1] * tempY;
+		s = produitScalaire(GRADIENT_2D[gi0], tempX,  tempY);
 
 		tempX = x - (x0 + 1);
 		tempY = y - y0;
-		t = GRADIENT_2D[gi1][0] * tempX + GRADIENT_2D[gi1][1] * tempY;
+		t = produitScalaire(GRADIENT_2D[gi1], tempX,  tempY);
 
 		tempX = x - x0;
 		tempY = y - (y0 + 1);
-		u = GRADIENT_2D[gi2][0] * tempX + GRADIENT_2D[gi2][1] * tempY;
+		u = produitScalaire(GRADIENT_2D[gi2], tempX,  tempY);
 
 		tempX = x - (x0 + 1);
 		tempY = y - (y0 + 1);
-		v = GRADIENT_2D[gi3][0] * tempX + GRADIENT_2D[gi3][1] * tempY;
+		v = produitScalaire(GRADIENT_2D[gi3], tempX,  tempY);
 
 		// Interpolations pour lisser les valeurs obtenues
 		tmp = x - x0;
@@ -82,6 +84,10 @@ public class BruitPerlin2D extends Bruit2D {
 		tmp = y - y0;
 		Cy = 3 * tmp * tmp - 2 * tmp * tmp * tmp;
 
-		return Li2 + Cy * (Li2 - Li1);
+		return (Li1 + Cy * (Li2 - Li1)) * unit;
+	}
+
+	private double produitScalaire(float[] gradient, double x, double y) {
+		return gradient[0] * x + gradient[1] * y;
 	}
 }
