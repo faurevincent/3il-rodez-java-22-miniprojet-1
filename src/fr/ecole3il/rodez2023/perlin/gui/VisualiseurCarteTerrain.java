@@ -85,6 +85,9 @@ public class VisualiseurCarteTerrain extends JFrame {
 		cartePanel.addMouseMotionListener(new MouseAdapter() {
 		    @Override
 		    public void mouseMoved(MouseEvent e) {
+				if(carte == null){
+					return;
+				}
 		        int tuileWidth = cartePanel.getWidth() / carte.getLargeur();
 		        int tuileHeight = cartePanel.getHeight() / carte.getHauteur();
 
@@ -108,6 +111,9 @@ public class VisualiseurCarteTerrain extends JFrame {
 		cartePanel.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
+				if(carte == null){
+					return;
+				}
 		        int tuileWidth = cartePanel.getWidth() / carte.getLargeur();
 		        int tuileHeight = cartePanel.getHeight() / carte.getHauteur();
 
@@ -117,7 +123,7 @@ public class VisualiseurCarteTerrain extends JFrame {
 		        if (x >= 0 && x < carte.getLargeur() && y >= 0 && y < carte.getHauteur()) {
 
 		            // Crée le contenu à afficher dans la fenêtre modale
-		            String contenu = "Altitude: " + vte.getAltitudeAffichee(x, y) + "\nHydrométrie: " + vte.getHydrometrieAffichee(x, y)+ "\nTempérature: " + vte.getTemperatureAffichee(x, y);
+		            String contenu = "Altitude: " + vte.getAltitude(x, y) + "\nHydrométrie: " + vte.getHydrometrie(x, y)+ "\nTempérature: " + vte.getTemperature(x, y);
 
 		            // Affiche une fenêtre modale avec les informations de la tuile
 		            JOptionPane.showMessageDialog(cartePanel, contenu, "Informations de la tuile", JOptionPane.INFORMATION_MESSAGE);
