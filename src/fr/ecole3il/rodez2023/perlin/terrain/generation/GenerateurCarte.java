@@ -1,6 +1,7 @@
 package fr.ecole3il.rodez2023.perlin.terrain.generation;
 
 import fr.ecole3il.rodez2023.perlin.terrain.elements.Terrain;
+import fr.ecole3il.rodez2023.perlin.terrain.exception.MauvaiseValeurException;
 
 /**
  * Cette classe abstraite représente un générateur de carte utilisant la méthode Perlin
